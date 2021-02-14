@@ -48,13 +48,15 @@ public class MainFrame extends JFrame {
 
     Circle circle, circle1;
 
-    public Circle setCircle(int width, int height){
+    public Circle setCircle(int width, int x, int y, int height){
 
         circle = new Circle(width, height);
 
         circlePanelWrapper.add(circle);
         //circlePanelWrapper.validate();
         resetListener(circle);
+        setLocation(circle, x, y);
+
         return circle;
 
     }
@@ -73,7 +75,7 @@ public class MainFrame extends JFrame {
 
         super("Circle Generator");
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+        setLayout(null);
         //mainFrame.setLayout(new GridBagLayout());
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
@@ -91,7 +93,7 @@ public class MainFrame extends JFrame {
         //Circle Panel Wrapper
         //circlePanel.setPreferredSize(new Dimension(50, 400));
         circlePanelWrapper.setLayout(new GridLayout(1,2));
-        circle = setCircle(125, 125);
+        circle = setCircle(125, 20, 20,  125);
         circle1 = setCircle1(125, 125);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
         circlePanelWrapper.setVisible(true);
@@ -226,6 +228,8 @@ public class MainFrame extends JFrame {
                 if(calXInt > 550){ calXInt = 500; }
                 if(calYInt > 550){ calYInt = 500; }
                 Point position = new Point(calXInt, calYInt-70);
+                xInput1.setText(""+calXInt);
+                yInput1.setText(""+(calYInt-70));
                 System.out.println(position);
                 circle.setLocation(position);
                 Rectangle bounds = circle.getBounds();
@@ -234,8 +238,10 @@ public class MainFrame extends JFrame {
                 if(bounds.intersects(bounds1)){
                     System.out.println("intersects");
                     //titleLabel.setText("Two circle intersect? Yes");
+                    titleLabel.setBackground(Color.RED);
                 }else{
                     //titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setBackground(Color.BLUE);
                 }
 
             }
@@ -266,6 +272,8 @@ public class MainFrame extends JFrame {
                 if(calXInt1 > 550){ calXInt1 = 500; }
                 if(calYInt1 > 550){ calYInt1 = 500; }
                 Point position1 = new Point(calXInt1, calYInt1-70);
+                xInput2.setText(""+calXInt1);
+                yInput2.setText(""+(calYInt1-70));
                 System.out.println(position1);
                 circle1.setLocation(position1);
 
@@ -281,6 +289,14 @@ public class MainFrame extends JFrame {
 
             }
         });
+
+    }
+
+    public void setLocation(Circle circle, int x, int y){
+        Point positionTemp = new Point(x, y);
+        //System.out.println(circle);
+        System.out.println(positionTemp);
+        circle.setLocation(x, y);
 
     }
 

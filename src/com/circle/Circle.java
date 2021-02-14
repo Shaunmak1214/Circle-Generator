@@ -10,11 +10,11 @@ public class Circle extends JPanel {
     int width, height;
 
     public Circle(int width, int height) {
-        setSize(width,height);
+        setSize((width-20),(height-20));
         this.width = width;
         this.height = height;
-        setBackground(Color.BLUE);
-        setOpaque(true);
+        //setBackground(Color.BLUE);
+        setOpaque(false);
         setVisible(true);
     }
 
