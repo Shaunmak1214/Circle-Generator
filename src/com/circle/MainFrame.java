@@ -11,55 +11,68 @@ public class MainFrame extends JFrame {
 
     Point currentLocation;
     Point currentScreenLocation;
-    private Object Rectangle;
 
-    public MainFrame(){
+    JFrame mainFrame = new JFrame("Circle Generator");
+    JPanel titlePanel = new JPanel();
+    JPanel mainWrapper = new JPanel();
+    JPanel circlePanelWrapper = new JPanel();
+    JPanel userInputPanel = new JPanel();
+    JPanel userInputLeftPanel = new JPanel();
+    JPanel xInputPanel1 = new JPanel();
+    JPanel xInputPanel2 = new JPanel();
+    JPanel yInputPanel1 = new JPanel();
+    JPanel yInputPanel2 = new JPanel();
+    JPanel radiusPanel1 = new JPanel();
+    JPanel radiusPanel2 = new JPanel();
+    JPanel userInputRightPanel = new JPanel();
+    JPanel footerPanel = new JPanel();
 
-        super("Circle Generator");
-        initUI();
+    JLabel titleLabel = new JLabel();
+    JLabel titleInput1 = new JLabel();
+    JLabel titleInput2 = new JLabel();
+    JLabel xInputTitle1 = new JLabel();
+    JLabel yInputTitle1 = new JLabel();
+    JLabel xInputTitle2 = new JLabel();
+    JLabel yInputTitle2 = new JLabel();
+    JLabel radiusTitle1 = new JLabel();
+    JLabel radiusTitle2 = new JLabel();
+
+    JButton redrawButton = new JButton();
+
+    JTextField xInput1 = new JTextField();
+    JTextField xInput2 = new JTextField();
+    JTextField yInput1 = new JTextField();
+    JTextField yInput2 = new JTextField();
+    JTextField radiusInput1  = new JTextField();
+    JTextField radiusInput2  = new JTextField();
+
+    Circle circle, circle1;
+
+    public Circle setCircle(int width, int height){
+
+        circle = new Circle(width, height);
+
+        circlePanelWrapper.add(circle);
+        //circlePanelWrapper.validate();
+        resetListener(circle);
+        return circle;
 
     }
 
-    public void initUI(){
+    public Circle setCircle1(int width, int height){
 
-        JFrame mainFrame = new JFrame("Circle Generator");
-        JPanel titlePanel = new JPanel();
-        JPanel mainWrapper = new JPanel();
-        JPanel circlePanelWrapper = new JPanel();
-        JPanel userInputPanel = new JPanel();
-        JPanel userInputLeftPanel = new JPanel();
-        JPanel xInputPanel1 = new JPanel();
-        JPanel xInputPanel2 = new JPanel();
-        JPanel yInputPanel1 = new JPanel();
-        JPanel yInputPanel2 = new JPanel();
-        JPanel radiusPanel1 = new JPanel();
-        JPanel radiusPanel2 = new JPanel();
-        JPanel userInputRightPanel = new JPanel();
-        JPanel footerPanel = new JPanel();
+        circle1 = new Circle(width, height);
 
-        JLabel titleLabel = new JLabel();
-        JLabel titleInput1 = new JLabel();
-        JLabel titleInput2 = new JLabel();
-        JLabel xInputTitle1 = new JLabel();
-        JLabel yInputTitle1 = new JLabel();
-        JLabel xInputTitle2 = new JLabel();
-        JLabel yInputTitle2 = new JLabel();
-        JLabel radiusTitle1 = new JLabel();
-        JLabel radiusTitle2 = new JLabel();
+        circlePanelWrapper.add(circle1);
+        //circlePanelWrapper.validate();
+        resetListener1(circle1);
+        return circle1;
+    }
 
-        JButton redrawButton = new JButton();
+    public MainFrame(int width, int height){
 
-        JTextField xInput1 = new JTextField();
-        JTextField xInput2 = new JTextField();
-        JTextField yInput1 = new JTextField();
-        JTextField yInput2 = new JTextField();
-        JTextField radiusInput1  = new JTextField();
-        JTextField radiusInput2  = new JTextField();
-
+        super("Circle Generator");
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-        Circle circle = new Circle();
-        Circle circle1 = new Circle();
 
         //mainFrame.setLayout(new GridBagLayout());
         mainFrame.setResizable(true);
@@ -78,8 +91,8 @@ public class MainFrame extends JFrame {
         //Circle Panel Wrapper
         //circlePanel.setPreferredSize(new Dimension(50, 400));
         circlePanelWrapper.setLayout(new GridLayout(1,2));
-        circlePanelWrapper.add(circle);
-        circlePanelWrapper.add(circle1);
+        circle = setCircle(125, 125);
+        circle1 = setCircle1(125, 125);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
         circlePanelWrapper.setVisible(true);
         //circlePanelWrapper.setBackground(Color.RED);
@@ -185,9 +198,12 @@ public class MainFrame extends JFrame {
 
         mainFrame.add(titlePanel, BorderLayout.NORTH);
         mainFrame.add(mainWrapper, BorderLayout.CENTER);
-        //mainFrame.add(circlePanelWrapper, BorderLayout.CENTER);
         mainFrame.add(footerPanel, BorderLayout.SOUTH);
 
+
+    }
+
+    public void resetListener(Circle circle){
         circle.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 currentLocation = e.getPoint();
@@ -224,6 +240,9 @@ public class MainFrame extends JFrame {
 
             }
         });
+    }
+
+    public void resetListener1(Circle circle1){
 
         circle1.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {

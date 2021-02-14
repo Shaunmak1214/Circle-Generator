@@ -7,24 +7,27 @@ import java.awt.Color;
 
 public class Circle extends JPanel {
 
-    public Circle() {
-        setSize(125,125);
-        //setBackground(Color.BLUE);
-        setOpaque(false);
+    int width, height;
+
+    public Circle(int width, int height) {
+        setSize(width,height);
+        this.width = width;
+        this.height = height;
+        setBackground(Color.BLUE);
+        setOpaque(true);
         setVisible(true);
     }
 
     public void paint(Graphics g) {
         super.paint(g);
         //super.paint(g1);
-        setSize(150, 150);
-        g.drawOval(0,0,150,150);
+        setSize(width, height);
+        g.drawOval(0,0,width,height);
         //g.setColor(Color.RED);
         //g.fillOval(0,0,60,60);
         //g1.drawOval(50,50,100,100);
         //g1.setColor(Color.RED);
         //g1.fillOval(50,50,100,100);
     }
-
 
 }
