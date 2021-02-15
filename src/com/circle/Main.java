@@ -13,8 +13,10 @@ public class Main{
             public void actionPerformed(ActionEvent e) {
 
                 main.circlePanelWrapper.removeAll();
-                main.circlePanelWrapper.revalidate();
+                //main.circlePanelWrapper.revalidate();
                 main.circlePanelWrapper.repaint();
+                main.circlePanelWrapper.setLayout(null);
+
 
                 String ScircleR1 = main.radiusInput1.getText();
                 int circleR1;
@@ -27,15 +29,23 @@ public class Main{
 
                 String Sy1 = main.yInput1.getText();
                 int y1;
-                if( Sy1.equals("") ){ y1=0; }else{ y1=Integer.parseInt(Sy1.trim()); }
+                if( Sy1.equals("") ){ y1=50; }else{ y1=Integer.parseInt(Sy1.trim()); }
 
                 String ScircleR2 = main.radiusInput2.getText();
                 int circleR2;
                 if( ScircleR2.equals("") ){ circleR2 = 128; }else{ circleR2 = Integer.parseInt(ScircleR1.trim()); }
                 int circleR2T = circleR2 / 2;
 
+                String Sx2 = main.xInput2.getText();
+                int x2;
+                if( Sx2.equals("") ){ x2=50; }else{ x2=Integer.parseInt(Sx2.trim()); }
+
+                String Sy2 = main.yInput2.getText();
+                int y2;
+                if( Sy2.equals("") ){ y2=50; }else{ y2=Integer.parseInt(Sy2.trim()); }
+
                 main.setCircle(circleR1T, x1, y1, circleR1T);
-                main.setCircle1(circleR2T, circleR2T);
+                main.setCircle1(circleR2T, x2, y2, circleR2T);
 
                 System.out.println("New Circle");
 

@@ -61,13 +61,14 @@ public class MainFrame extends JFrame {
 
     }
 
-    public Circle setCircle1(int width, int height){
+    public Circle setCircle1(int width, int x, int y, int height){
 
         circle1 = new Circle(width, height);
 
         circlePanelWrapper.add(circle1);
         //circlePanelWrapper.validate();
         resetListener1(circle1);
+        setLocation(circle1, x, y);
         return circle1;
     }
 
@@ -75,7 +76,7 @@ public class MainFrame extends JFrame {
 
         super("Circle Generator");
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        setLayout(null);
+        circlePanelWrapper.setLayout(null);
         //mainFrame.setLayout(new GridBagLayout());
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
@@ -93,8 +94,8 @@ public class MainFrame extends JFrame {
         //Circle Panel Wrapper
         //circlePanel.setPreferredSize(new Dimension(50, 400));
         circlePanelWrapper.setLayout(new GridLayout(1,2));
-        circle = setCircle(125, 20, 20,  125);
-        circle1 = setCircle1(125, 125);
+        circle = setCircle(125, 0, 50,  125);
+        circle1 = setCircle1(125, 150, 50,125);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
         circlePanelWrapper.setVisible(true);
         //circlePanelWrapper.setBackground(Color.RED);
@@ -237,11 +238,15 @@ public class MainFrame extends JFrame {
 
                 if(bounds.intersects(bounds1)){
                     System.out.println("intersects");
-                    //titleLabel.setText("Two circle intersect? Yes");
-                    titleLabel.setBackground(Color.RED);
+                    titleLabel.setText("Two circle intersect? Yes");
+                    //titleLabel.revalidate();
+                    circlePanelWrapper.setLayout(null);
+                    //titleLabel.setBackground(Color.RED);
                 }else{
-                    //titleLabel.setText("Two circle intersect? NOO");
-                    titleLabel.setBackground(Color.BLUE);
+                    titleLabel.setText("Two circle intersect? NOO");
+                    //titleLabel.revalidate();
+                    circlePanelWrapper.setLayout(null);
+                    //titleLabel.setBackground(Color.BLUE);
                 }
 
             }
@@ -282,9 +287,11 @@ public class MainFrame extends JFrame {
 
                 if(bounds.intersects(bounds1)){
                     System.out.println("intersects");
-                    //titleLabel.setText("Two circle intersect? Yes");
+                    titleLabel.setText("Two circle intersect? Yes");
+                    circlePanelWrapper.setLayout(null);
                 }else{
-                    //titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setText("Two circle intersect? NOO");
+                    circlePanelWrapper.setLayout(null);
                 }
 
             }
@@ -292,11 +299,12 @@ public class MainFrame extends JFrame {
 
     }
 
-    public void setLocation(Circle circle, int x, int y){
+    public void setLocation(Circle circlepassed, int x, int y){
+        circlePanelWrapper.setLayout(null);
         Point positionTemp = new Point(x, y);
         //System.out.println(circle);
         System.out.println(positionTemp);
-        circle.setLocation(x, y);
+        circlepassed.setLocation(x, y);
 
     }
 
