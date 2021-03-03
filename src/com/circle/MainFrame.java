@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class MainFrame extends JFrame {
 
@@ -54,7 +56,7 @@ public class MainFrame extends JFrame {
 
         circlePanelWrapper.add(circle);
         //circlePanelWrapper.validate();
-        resetListener(circle);
+        resetListener(circle, mainFrame);
         setLocation(circle, x, y);
 
         return circle;
@@ -67,7 +69,7 @@ public class MainFrame extends JFrame {
 
         circlePanelWrapper.add(circle1);
         //circlePanelWrapper.validate();
-        resetListener1(circle1);
+        resetListener1(circle1, mainFrame);
         setLocation(circle1, x, y);
         return circle1;
     }
@@ -76,12 +78,14 @@ public class MainFrame extends JFrame {
 
         super("Circle Generator");
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        circlePanelWrapper.setLayout(null);
+        //circlePanelWrapper.setLayout(null);
         //mainFrame.setLayout(new GridBagLayout());
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.setBackground(Color.WHITE);
         mainFrame.setSize(600, 600);
+        //mainFrame.pack();
+        //mainFrame.setLocationRelativeTo(null);
 
         titleLabel.setText("Two circle intersect? NO");
         titleLabel.setOpaque(true);
@@ -93,7 +97,7 @@ public class MainFrame extends JFrame {
 
         //Circle Panel Wrapper
         //circlePanel.setPreferredSize(new Dimension(50, 400));
-        circlePanelWrapper.setLayout(new GridLayout(1,2));
+        //circlePanelWrapper.setLayout(new GridLayout(1,2));
         circle = setCircle(125, 0, 50,  125);
         circle1 = setCircle1(125, 150, 50,125);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
@@ -206,28 +210,35 @@ public class MainFrame extends JFrame {
 
     }
 
-    public void resetListener(Circle circle){
+    public void resetListener(Circle circle, JFrame frame){
+
         circle.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 currentLocation = e.getPoint();
-                //System.out.println(e.getPoint());
+                System.out.println(e.getPoint());
             }
         });
 
         circle.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
+                Point frameLocation = frame.getLocationOnScreen();
+                double frameLocationX = frameLocation.getX();
+                double frameLocationY = frameLocation.getY();
+                System.out.println("frame location : " + frameLocation);
                 currentScreenLocation = e.getLocationOnScreen();
                 //System.out.println(e.getLocationOnScreen());
                 double currentScreenlocationX = currentScreenLocation.getX();
                 double currentScreenlocationY = currentScreenLocation.getY();
                 double currentLocationX = currentLocation.getX();
                 double currentLocationY = currentLocation.getY();
-                double calX = currentScreenlocationX - currentLocationX;
-                double calY = currentScreenlocationY - currentLocationY;
+                double calX = currentScreenlocationX - currentLocationX - frameLocationX;
+                double calY = currentScreenlocationY - currentLocationY - frameLocationY;
                 int calXInt = (int) calX;
                 int calYInt = (int) calY;
-                if(calXInt > 550){ calXInt = 500; }
-                if(calYInt > 550){ calYInt = 500; }
+                if(calXInt > 500){ calXInt = 500; }
+                if(calXInt < 0){ calXInt = 0; }
+                if(calYInt > 250){ calYInt = 250; }
+                if(calYInt < 0){ calYInt = 0; }
                 Point position = new Point(calXInt, calYInt-70);
                 xInput1.setText(""+calXInt);
                 yInput1.setText(""+(calYInt-70));
@@ -253,7 +264,7 @@ public class MainFrame extends JFrame {
         });
     }
 
-    public void resetListener1(Circle circle1){
+    public void resetListener1(Circle circle1, JFrame frame){
 
         circle1.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -264,18 +275,23 @@ public class MainFrame extends JFrame {
 
         circle1.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
+                Point frameLocation = frame.getLocationOnScreen();
+                double frameLocationX = frameLocation.getX();
+                double frameLocationY = frameLocation.getY();
                 currentScreenLocation = e.getLocationOnScreen();
                 //System.out.println(e.getLocationOnScreen());
                 double currentScreenlocationX1 = currentScreenLocation.getX();
                 double currentScreenlocationY1 = currentScreenLocation.getY();
                 double currentLocationX1 = currentLocation.getX();
                 double currentLocationY1 = currentLocation.getY();
-                double calX1 = currentScreenlocationX1 - currentLocationX1;
-                double calY1 = currentScreenlocationY1 - currentLocationY1;
+                double calX1 = currentScreenlocationX1 - currentLocationX1 - frameLocationX;
+                double calY1 = currentScreenlocationY1 - currentLocationY1 - frameLocationY;
                 int calXInt1 = (int) calX1;
                 int calYInt1 = (int) calY1;
-                if(calXInt1 > 550){ calXInt1 = 500; }
-                if(calYInt1 > 550){ calYInt1 = 500; }
+                if(calXInt1 > 500){ calXInt1 = 500; }
+                if(calXInt1 < 0){ calXInt1 = 0; }
+                if(calYInt1 > 250){ calYInt1 = 250; }
+                if(calYInt1 < 0){ calYInt1 = 0; }
                 Point position1 = new Point(calXInt1, calYInt1-70);
                 xInput2.setText(""+calXInt1);
                 yInput2.setText(""+(calYInt1-70));
