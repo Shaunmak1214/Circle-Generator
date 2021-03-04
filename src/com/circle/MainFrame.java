@@ -242,22 +242,60 @@ public class MainFrame extends JFrame {
                 Point position = new Point(calXInt, calYInt-70);
                 xInput1.setText(""+calXInt);
                 yInput1.setText(""+(calYInt-70));
-                System.out.println(position);
+                //System.out.println(position);
                 circle.setLocation(position);
                 Rectangle bounds = circle.getBounds();
                 Rectangle bounds1 = circle1.getBounds();
 
                 if(bounds.intersects(bounds1)){
-                    System.out.println("intersects");
-                    titleLabel.setText("Two circle intersect? Yes");
+                    //System.out.println("intersects");
+                    //titleLabel.setText("Two circle intersect? Yes");
                     //titleLabel.revalidate();
-                    circlePanelWrapper.setLayout(null);
+                    //circlePanelWrapper.setLayout(null);
                     //titleLabel.setBackground(Color.RED);
                 }else{
-                    titleLabel.setText("Two circle intersect? NOO");
+                    //titleLabel.setText("Two circle intersect? NOO");
                     //titleLabel.revalidate();
-                    circlePanelWrapper.setLayout(null);
+                    //circlePanelWrapper.setLayout(null);
                     //titleLabel.setBackground(Color.BLUE);
+                }
+
+                Point centerCircle = circle.getLocation();
+                Point centerCircle1 = circle1.getLocation();
+                int x1 = (int) centerCircle.getX();
+                int x2 = (int) centerCircle1.getX();
+                int y1 = (int) centerCircle.getY();
+                int y2 = (int) centerCircle1.getY();
+                int dx = x2 - x1;
+                int dy = y2 - y1;
+                int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
+                double r1 = 62.5;
+                double r2 = 62.5;
+                if(!radiusInput1.getText().isEmpty()){
+                    r1 = Double.parseDouble(radiusInput1.getText());
+                    r1 = r1/2;
+                }else{
+                    r1 = 62.5;
+                }
+
+                if(!radiusInput2.getText().isEmpty()) {
+                    r2 = Double.parseDouble(radiusInput2.getText());
+                    r2 = r2/2;
+                    System.out.println(r2);
+                }else{
+                    r2 = 62.5;
+                }
+                if(distance > (r1+r2))
+                {
+                    titleLabel.setText("Two circle intersect? NOO");
+                }
+                else if(distance < Math.abs(r1 - r2))
+                {
+                    titleLabel.setText("Two circle intersect? NOO");
+                }
+                else
+                {
+                    titleLabel.setText("Two circle intersect? Yes");
                 }
 
             }
@@ -302,12 +340,51 @@ public class MainFrame extends JFrame {
                 Rectangle bounds1 = circle1.getBounds();
 
                 if(bounds.intersects(bounds1)){
-                    System.out.println("intersects");
-                    titleLabel.setText("Two circle intersect? Yes");
-                    circlePanelWrapper.setLayout(null);
+                    //System.out.println("intersects");
+                    //titleLabel.setText("Two circle intersect? Yes");
+                    //circlePanelWrapper.setLayout(null);
                 }else{
+                    //titleLabel.setText("Two circle intersect? NOO");
+                    //circlePanelWrapper.setLayout(null);
+                }
+
+                Point centerCircle = circle.getLocation();
+                Point centerCircle1 = circle1.getLocation();
+                int x1 = (int) centerCircle.getX();
+                int x2 = (int) centerCircle1.getX();
+                int y1 = (int) centerCircle.getY();
+                int y2 = (int) centerCircle1.getY();
+                int dx = x2 - x1;
+                int dy = y2 - y1;
+                int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
+                double r11 = 62.5;
+                double r22 = 62.5;
+                if(!radiusInput1.getText().isEmpty()){
+                    r11 = Double.parseDouble(radiusInput1.getText());
+                    r11 = r11/2;
+                }else{
+                    r11 = 62.5;
+                }
+
+                if(!radiusInput2.getText().isEmpty()) {
+                    r22 = Double.parseDouble(radiusInput2.getText());
+                    r22 = r22/2;
+                    System.out.println(r22);
+                }else{
+                    r22 = 62.5;
+                }
+
+                if(distance > (r11+r22))
+                {
                     titleLabel.setText("Two circle intersect? NOO");
-                    circlePanelWrapper.setLayout(null);
+                }
+                else if(distance < Math.abs(r11 - r22))
+                {
+                    titleLabel.setText("Two circle intersect? NOO");
+                }
+                else
+                {
+                    titleLabel.setText("Two circle intersect? Yes");
                 }
 
             }

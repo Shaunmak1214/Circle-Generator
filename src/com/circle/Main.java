@@ -21,7 +21,7 @@ public class Main{
                 String ScircleR1 = main.radiusInput1.getText();
                 int circleR1;
                 if( ScircleR1.equals("") ){ circleR1 = 128; }else{ circleR1 = Integer.parseInt(ScircleR1.trim()); }
-                int circleR1T = circleR1 / 2;
+                int circleR1T = circleR1;
 
                 String Sx1 = main.xInput1.getText();
                 int x1;
@@ -34,7 +34,7 @@ public class Main{
                 String ScircleR2 = main.radiusInput2.getText();
                 int circleR2;
                 if( ScircleR2.equals("") ){ circleR2 = 128; }else{ circleR2 = Integer.parseInt(ScircleR2.trim()); }
-                int circleR2T = circleR2 / 2;
+                int circleR2T = circleR2;
 
                 System.out.println(circleR1T);
                 System.out.println(circleR2T);
