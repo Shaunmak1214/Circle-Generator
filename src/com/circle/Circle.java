@@ -1,26 +1,27 @@
+//Mak Yen Wei 1181203334
+
 package com.circle;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.Graphics;
-import java.awt.Color;
 
+//A class which used to draw a graphics
 public class Circle extends JPanel {
 
-    int width, height;
+    int diameter;
 
-    public Circle(int width, int height) {
-        setSize((width-20),(height-20));
-        this.width = width;
-        this.height = height;
+    public Circle(int diameter) {
+        setSize((diameter-20),(diameter-20));
+        this.diameter = diameter;
         setOpaque(false);
         setVisible(true);
     }
 
+    //Draw a circle
     public void paint(Graphics g) {
         super.paint(g);
-        setSize(width, height);
-        g.drawOval(0,0,width,height);
+        setSize(diameter, diameter);
+        g.drawOval(0,0,diameter,diameter);
     }
 
 }

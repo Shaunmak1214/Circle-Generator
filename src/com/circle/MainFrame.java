@@ -1,18 +1,17 @@
+//Mak Yen Wei 1181203334
+
 package com.circle;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 public class MainFrame extends JFrame {
 
     Point currentLocation;
     Point currentScreenLocation;
+    int width;
 
     JFrame mainFrame = new JFrame("Circle Generator");
     JPanel titlePanel = new JPanel();
@@ -50,44 +49,43 @@ public class MainFrame extends JFrame {
 
     Circle circle, circle1;
 
-    public Circle setCircle(int width, int x, int y, int height){
+    //Setting of circle 1
+    public Circle setCircle(int radius1, int x, int y, int radius2){
 
-        circle = new Circle(width, height);
+        width = radius1*2;
+        circle = new Circle(width);
 
         circlePanelWrapper.add(circle);
-        //circlePanelWrapper.validate();
-        resetListener(circle, mainFrame);
+        resetListener(circle, mainFrame, radius1, radius2);
         setLocation(circle, x, y);
 
         return circle;
 
     }
 
-    public Circle setCircle1(int width, int x, int y, int height){
+    //Setting of circle 2
+    public Circle setCircle1(int radius1, int x, int y, int radius2){
 
-        circle1 = new Circle(width, height);
+        width = radius2*2;
+        circle1 = new Circle(width);
 
         circlePanelWrapper.add(circle1);
-        //circlePanelWrapper.validate();
-        resetListener1(circle1, mainFrame);
+        resetListener1(circle1, mainFrame, radius1, radius2);
         setLocation(circle1, x, y);
         return circle1;
     }
 
-    public MainFrame(int width, int height){
+    public MainFrame(){
 
         super("Circle Generator");
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        //circlePanelWrapper.setLayout(null);
-        //mainFrame.setLayout(new GridBagLayout());
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.setBackground(Color.WHITE);
         mainFrame.setSize(600, 600);
-        //mainFrame.pack();
-        //mainFrame.setLocationRelativeTo(null);
 
-        titleLabel.setText("Two circle intersect? NO");
+        //Intersect Title Label
+        titleLabel.setText("Two circle intersect? No");
         titleLabel.setOpaque(true);
         titlePanel.add(titleLabel);
         titlePanel.setPreferredSize(new Dimension(50, 50));
@@ -96,13 +94,10 @@ public class MainFrame extends JFrame {
         titlePanel.setSize(600, 100);
 
         //Circle Panel Wrapper
-        //circlePanel.setPreferredSize(new Dimension(50, 400));
-        //circlePanelWrapper.setLayout(new GridLayout(1,2));
-        circle = setCircle(125, 0, 50,  125);
-        circle1 = setCircle1(125, 150, 50,125);
+        circle = setCircle(60, 0, 50,  60);
+        circle1 = setCircle1(60, 150, 50,60);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
         circlePanelWrapper.setVisible(true);
-        //circlePanelWrapper.setBackground(Color.RED);
         circlePanelWrapper.setSize(new Dimension(600, 100));
 
         //Input wrapper panel
@@ -206,11 +201,9 @@ public class MainFrame extends JFrame {
         mainFrame.add(titlePanel, BorderLayout.NORTH);
         mainFrame.add(mainWrapper, BorderLayout.CENTER);
         mainFrame.add(footerPanel, BorderLayout.SOUTH);
-
-
     }
 
-    public void resetListener(Circle circle, JFrame frame){
+    public void resetListener(Circle circle, JFrame frame, int radius1, int radius2){
 
         circle.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -221,77 +214,52 @@ public class MainFrame extends JFrame {
 
         circle.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
+                //Get the point when mouse is dragging the circle 1
                 Point frameLocation = frame.getLocationOnScreen();
                 double frameLocationX = frameLocation.getX();
                 double frameLocationY = frameLocation.getY();
                 System.out.println("frame location : " + frameLocation);
                 currentScreenLocation = e.getLocationOnScreen();
-                //System.out.println(e.getLocationOnScreen());
-                double currentScreenlocationX = currentScreenLocation.getX();
-                double currentScreenlocationY = currentScreenLocation.getY();
+                double currentScreenLocationX = currentScreenLocation.getX();
+                double currentScreenLocationY = currentScreenLocation.getY();
                 double currentLocationX = currentLocation.getX();
                 double currentLocationY = currentLocation.getY();
-                double calX = currentScreenlocationX - currentLocationX - frameLocationX;
-                double calY = currentScreenlocationY - currentLocationY - frameLocationY;
+                double calX = currentScreenLocationX - currentLocationX - frameLocationX;
+                double calY = currentScreenLocationY - currentLocationY - frameLocationY;
                 int calXInt = (int) calX;
                 int calYInt = (int) calY;
+                //Limit the moving area of circle
                 if(calXInt > 500){ calXInt = 500; }
                 if(calXInt < 0){ calXInt = 0; }
                 if(calYInt > 250){ calYInt = 250; }
                 if(calYInt < 0){ calYInt = 0; }
-                Point position = new Point(calXInt, calYInt-70);
-                xInput1.setText(""+calXInt);
-                yInput1.setText(""+(calYInt-70));
-                //System.out.println(position);
+                Point position = new Point((calXInt), (calYInt-70));
+                xInput1.setText(""+(calXInt+radius1));
+                yInput1.setText(""+(calYInt+radius1-70));
+                radiusInput1.setText(""+(radius1));
                 circle.setLocation(position);
-                Rectangle bounds = circle.getBounds();
-                Rectangle bounds1 = circle1.getBounds();
 
-                if(bounds.intersects(bounds1)){
-                    //System.out.println("intersects");
-                    //titleLabel.setText("Two circle intersect? Yes");
-                    //titleLabel.revalidate();
-                    //circlePanelWrapper.setLayout(null);
-                    //titleLabel.setBackground(Color.RED);
-                }else{
-                    //titleLabel.setText("Two circle intersect? NOO");
-                    //titleLabel.revalidate();
-                    //circlePanelWrapper.setLayout(null);
-                    //titleLabel.setBackground(Color.BLUE);
-                }
-
+                //Get center point of circle
                 Point centerCircle = circle.getLocation();
                 Point centerCircle1 = circle1.getLocation();
-                int x1 = (int) centerCircle.getX();
-                int x2 = (int) centerCircle1.getX();
-                int y1 = (int) centerCircle.getY();
-                int y2 = (int) centerCircle1.getY();
+                int x1 = (int) (centerCircle.getX()+radius1);
+                int x2 = (int) (centerCircle1.getX()+radius2);
+                int y1 = (int) (centerCircle.getY()+radius1);
+                int y2 = (int) (centerCircle1.getY()+radius2);
+
+                //Calculate the distance between the center point of circle 1 and 2
                 int dx = x2 - x1;
                 int dy = y2 - y1;
                 int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
-                double r1 = 62.5;
-                double r2 = 62.5;
-                if(!radiusInput1.getText().isEmpty()){
-                    r1 = Double.parseDouble(radiusInput1.getText());
-                    r1 = r1/2;
-                }else{
-                    r1 = 62.5;
-                }
 
-                if(!radiusInput2.getText().isEmpty()) {
-                    r2 = Double.parseDouble(radiusInput2.getText());
-                    r2 = r2/2;
-                    System.out.println(r2);
-                }else{
-                    r2 = 62.5;
-                }
-                if(distance > (r1+r2))
+                //Determine the intersection
+                if(distance > (radius1+radius2))
                 {
-                    titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setText("Two circle intersect? No");
                 }
-                else if(distance < Math.abs(r1 - r2))
+                else if(distance < Math.abs(radius1 - radius2))
                 {
-                    titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setText("Two circle intersect? No");
                 }
                 else
                 {
@@ -302,7 +270,7 @@ public class MainFrame extends JFrame {
         });
     }
 
-    public void resetListener1(Circle circle1, JFrame frame){
+    public void resetListener1(Circle circle1, JFrame frame, int radius1, int radius2){
 
         circle1.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -313,91 +281,66 @@ public class MainFrame extends JFrame {
 
         circle1.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
+                //Get the point when mouse is dragging the circle 2
                 Point frameLocation = frame.getLocationOnScreen();
                 double frameLocationX = frameLocation.getX();
                 double frameLocationY = frameLocation.getY();
                 currentScreenLocation = e.getLocationOnScreen();
-                //System.out.println(e.getLocationOnScreen());
-                double currentScreenlocationX1 = currentScreenLocation.getX();
-                double currentScreenlocationY1 = currentScreenLocation.getY();
+                double currentScreenLocationX1 = currentScreenLocation.getX();
+                double currentScreenLocationY1 = currentScreenLocation.getY();
                 double currentLocationX1 = currentLocation.getX();
                 double currentLocationY1 = currentLocation.getY();
-                double calX1 = currentScreenlocationX1 - currentLocationX1 - frameLocationX;
-                double calY1 = currentScreenlocationY1 - currentLocationY1 - frameLocationY;
+                double calX1 = currentScreenLocationX1 - currentLocationX1 - frameLocationX;
+                double calY1 = currentScreenLocationY1 - currentLocationY1 - frameLocationY;
                 int calXInt1 = (int) calX1;
                 int calYInt1 = (int) calY1;
+                //Limit the moving area of circle
                 if(calXInt1 > 500){ calXInt1 = 500; }
                 if(calXInt1 < 0){ calXInt1 = 0; }
                 if(calYInt1 > 250){ calYInt1 = 250; }
                 if(calYInt1 < 0){ calYInt1 = 0; }
                 Point position1 = new Point(calXInt1, calYInt1-70);
-                xInput2.setText(""+calXInt1);
-                yInput2.setText(""+(calYInt1-70));
+                xInput2.setText(""+(calXInt1+radius2));
+                yInput2.setText(""+(calYInt1+radius2-70));
+                radiusInput2.setText(""+(radius2));
                 System.out.println(position1);
                 circle1.setLocation(position1);
 
-                Rectangle bounds = circle.getBounds();
-                Rectangle bounds1 = circle1.getBounds();
-
-                if(bounds.intersects(bounds1)){
-                    //System.out.println("intersects");
-                    //titleLabel.setText("Two circle intersect? Yes");
-                    //circlePanelWrapper.setLayout(null);
-                }else{
-                    //titleLabel.setText("Two circle intersect? NOO");
-                    //circlePanelWrapper.setLayout(null);
-                }
-
+                //Get center point of circle
                 Point centerCircle = circle.getLocation();
                 Point centerCircle1 = circle1.getLocation();
-                int x1 = (int) centerCircle.getX();
-                int x2 = (int) centerCircle1.getX();
-                int y1 = (int) centerCircle.getY();
-                int y2 = (int) centerCircle1.getY();
+                int x1 = (int) (centerCircle.getX()+radius1);
+                int x2 = (int) (centerCircle1.getX()+radius2);
+                int y1 = (int) (centerCircle.getY()+radius1);
+                int y2 = (int) (centerCircle1.getY()+radius2);
                 int dx = x2 - x1;
                 int dy = y2 - y1;
                 int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
-                double r11 = 62.5;
-                double r22 = 62.5;
-                if(!radiusInput1.getText().isEmpty()){
-                    r11 = Double.parseDouble(radiusInput1.getText());
-                    r11 = r11/2;
-                }else{
-                    r11 = 62.5;
-                }
 
-                if(!radiusInput2.getText().isEmpty()) {
-                    r22 = Double.parseDouble(radiusInput2.getText());
-                    r22 = r22/2;
-                    System.out.println(r22);
-                }else{
-                    r22 = 62.5;
-                }
-
-                if(distance > (r11+r22))
+                //Determine the intersection
+                if(distance > (radius1+radius2))
                 {
-                    titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setText("Two circle intersect? No");
                 }
-                else if(distance < Math.abs(r11 - r22))
+                else if(distance < Math.abs(radius1 - radius2))
                 {
-                    titleLabel.setText("Two circle intersect? NOO");
+                    titleLabel.setText("Two circle intersect? No");
                 }
                 else
                 {
                     titleLabel.setText("Two circle intersect? Yes");
                 }
-
             }
         });
-
     }
 
-    public void setLocation(Circle circlepassed, int x, int y){
+    //Set location of circle
+    public void setLocation(Circle circlePassed, int x, int y){
         circlePanelWrapper.setLayout(null);
         Point positionTemp = new Point(x, y);
         //System.out.println(circle);
         System.out.println(positionTemp);
-        circlepassed.setLocation(x, y);
+        circlePassed.setLocation(x, y);
 
     }
 
