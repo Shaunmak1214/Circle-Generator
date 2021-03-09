@@ -239,32 +239,7 @@ public class MainFrame extends JFrame {
                 radiusInput1.setText(""+(radius1));
                 circle.setLocation(position);
 
-                //Get center point of circle
-                Point centerCircle = circle.getLocation();
-                Point centerCircle1 = circle1.getLocation();
-                int x1 = (int) (centerCircle.getX()+radius1);
-                int x2 = (int) (centerCircle1.getX()+radius2);
-                int y1 = (int) (centerCircle.getY()+radius1);
-                int y2 = (int) (centerCircle1.getY()+radius2);
-
-                //Calculate the distance between the center point of circle 1 and 2
-                int dx = x2 - x1;
-                int dy = y2 - y1;
-                int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
-
-                //Determine the intersection
-                if(distance > (radius1+radius2))
-                {
-                    titleLabel.setText("Two circle intersect? No");
-                }
-                else if(distance < Math.abs(radius1 - radius2))
-                {
-                    titleLabel.setText("Two circle intersect? No");
-                }
-                else
-                {
-                    titleLabel.setText("Two circle intersect? Yes");
-                }
+                checkIntersection(radius1, radius2);
 
             }
         });
@@ -275,7 +250,6 @@ public class MainFrame extends JFrame {
         circle1.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 currentLocation = e.getPoint();
-                //System.out.println(e.getPoint());
             }
         });
 
@@ -306,30 +280,7 @@ public class MainFrame extends JFrame {
                 System.out.println(position1);
                 circle1.setLocation(position1);
 
-                //Get center point of circle
-                Point centerCircle = circle.getLocation();
-                Point centerCircle1 = circle1.getLocation();
-                int x1 = (int) (centerCircle.getX()+radius1);
-                int x2 = (int) (centerCircle1.getX()+radius2);
-                int y1 = (int) (centerCircle.getY()+radius1);
-                int y2 = (int) (centerCircle1.getY()+radius2);
-                int dx = x2 - x1;
-                int dy = y2 - y1;
-                int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
-
-                //Determine the intersection
-                if(distance > (radius1+radius2))
-                {
-                    titleLabel.setText("Two circle intersect? No");
-                }
-                else if(distance < Math.abs(radius1 - radius2))
-                {
-                    titleLabel.setText("Two circle intersect? No");
-                }
-                else
-                {
-                    titleLabel.setText("Two circle intersect? Yes");
-                }
+                checkIntersection(radius1, radius2);
             }
         });
     }
@@ -338,9 +289,36 @@ public class MainFrame extends JFrame {
     public void setLocation(Circle circlePassed, int x, int y){
         circlePanelWrapper.setLayout(null);
         Point positionTemp = new Point(x, y);
-        //System.out.println(circle);
         System.out.println(positionTemp);
         circlePassed.setLocation(x, y);
+
+    }
+
+    public void checkIntersection(int radius1, int radius2){
+
+        Point centerCircle = circle.getLocation();
+        Point centerCircle1 = circle1.getLocation();
+        int x1 = (int) (centerCircle.getX()+radius1);
+        int x2 = (int) (centerCircle1.getX()+radius2);
+        int y1 = (int) (centerCircle.getY()+radius1);
+        int y2 = (int) (centerCircle1.getY()+radius2);
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+        int distance = (int)(Math.sqrt((dy*dy)+(dx*dx)));
+
+        //Determine the intersection
+        if(distance > (radius1+radius2))
+        {
+            titleLabel.setText("Two circle intersect? No");
+        }
+        else if(distance < Math.abs(radius1 - radius2))
+        {
+            titleLabel.setText("Two circle intersect? No");
+        }
+        else
+        {
+            titleLabel.setText("Two circle intersect? Yes");
+        }
 
     }
 
