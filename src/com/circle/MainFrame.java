@@ -50,28 +50,28 @@ public class MainFrame extends JFrame {
     Circle circle, circle1;
 
     //Setting of circle 1
-    public Circle setCircle(int radius1, int x, int y, int radius2){
+    public Circle setCircle(int x, int y, int radius1, int radius2){
 
         width = radius1*2;
         circle = new Circle(width);
 
         circlePanelWrapper.add(circle);
-        resetListener(circle, mainFrame, radius1, radius2);
-        setLocation(circle, x, y);
+        resetListener(circle, radius1, radius2);
+        setLocation(circle, x, y, radius1);
 
         return circle;
 
     }
 
     //Setting of circle 2
-    public Circle setCircle1(int radius1, int x, int y, int radius2){
+    public Circle setCircle1(int x, int y, int radius1, int radius2){
 
         width = radius2*2;
         circle1 = new Circle(width);
 
         circlePanelWrapper.add(circle1);
-        resetListener1(circle1, mainFrame, radius1, radius2);
-        setLocation(circle1, x, y);
+        resetListener1(circle1, radius1, radius2);
+        setLocation(circle1, x, y, radius2);
         return circle1;
     }
 
@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
         mainFrame.setSize(600, 600);
 
         //Intersect Title Label
-        titleLabel.setText("Two circle intersect? No");
+        titleLabel.setText("Two circle intersect? Yes");
         titleLabel.setOpaque(true);
         titlePanel.add(titleLabel);
         titlePanel.setPreferredSize(new Dimension(50, 50));
@@ -94,8 +94,8 @@ public class MainFrame extends JFrame {
         titlePanel.setSize(600, 100);
 
         //Circle Panel Wrapper
-        circle = setCircle(60, 0, 50,  60);
-        circle1 = setCircle1(60, 150, 50,60);
+        circle = setCircle( 80, 100,  60,60);
+        circle1 = setCircle1(150, 100, 60, 60);
         circlePanelWrapper.setBounds(0, 0, 600, 100);
         circlePanelWrapper.setVisible(true);
         circlePanelWrapper.setSize(new Dimension(600, 100));
@@ -203,49 +203,29 @@ public class MainFrame extends JFrame {
         mainFrame.add(footerPanel, BorderLayout.SOUTH);
     }
 
-    public void resetListener(Circle circle, JFrame frame, int radius1, int radius2){
+    public void resetListener(Circle circle, int radius1, int radius2){
 
         circle.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 currentLocation = e.getPoint();
-                System.out.println(e.getPoint());
             }
         });
 
         circle.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
-                //Get the point when mouse is dragging the circle 1
-                Point frameLocation = frame.getLocationOnScreen();
-                double frameLocationX = frameLocation.getX();
-                double frameLocationY = frameLocation.getY();
-                System.out.println("frame location : " + frameLocation);
+
+                boolean draggingC1 = false;
+                if(e.getSource() == circle)
+                { draggingC1 = true; }
                 currentScreenLocation = e.getLocationOnScreen();
-                double currentScreenLocationX = currentScreenLocation.getX();
-                double currentScreenLocationY = currentScreenLocation.getY();
-                double currentLocationX = currentLocation.getX();
-                double currentLocationY = currentLocation.getY();
-                double calX = currentScreenLocationX - currentLocationX - frameLocationX;
-                double calY = currentScreenLocationY - currentLocationY - frameLocationY;
-                int calXInt = (int) calX;
-                int calYInt = (int) calY;
-                //Limit the moving area of circle
-                if(calXInt > 500){ calXInt = 500; }
-                if(calXInt < 0){ calXInt = 0; }
-                if(calYInt > 250){ calYInt = 250; }
-                if(calYInt < 0){ calYInt = 0; }
-                Point position = new Point((calXInt), (calYInt-70));
-                xInput1.setText(""+(calXInt+radius1));
-                yInput1.setText(""+(calYInt+radius1-70));
-                radiusInput1.setText(""+(radius1));
+                Point position = dragLocation(draggingC1, false, radius1, radius2);
                 circle.setLocation(position);
-
                 checkIntersection(radius1, radius2);
-
             }
         });
     }
 
-    public void resetListener1(Circle circle1, JFrame frame, int radius1, int radius2){
+    public void resetListener1(Circle circle1, int radius1, int radius2){
 
         circle1.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -255,45 +235,63 @@ public class MainFrame extends JFrame {
 
         circle1.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
-                //Get the point when mouse is dragging the circle 2
-                Point frameLocation = frame.getLocationOnScreen();
-                double frameLocationX = frameLocation.getX();
-                double frameLocationY = frameLocation.getY();
-                currentScreenLocation = e.getLocationOnScreen();
-                double currentScreenLocationX1 = currentScreenLocation.getX();
-                double currentScreenLocationY1 = currentScreenLocation.getY();
-                double currentLocationX1 = currentLocation.getX();
-                double currentLocationY1 = currentLocation.getY();
-                double calX1 = currentScreenLocationX1 - currentLocationX1 - frameLocationX;
-                double calY1 = currentScreenLocationY1 - currentLocationY1 - frameLocationY;
-                int calXInt1 = (int) calX1;
-                int calYInt1 = (int) calY1;
-                //Limit the moving area of circle
-                if(calXInt1 > 500){ calXInt1 = 500; }
-                if(calXInt1 < 0){ calXInt1 = 0; }
-                if(calYInt1 > 250){ calYInt1 = 250; }
-                if(calYInt1 < 0){ calYInt1 = 0; }
-                Point position1 = new Point(calXInt1, calYInt1-70);
-                xInput2.setText(""+(calXInt1+radius2));
-                yInput2.setText(""+(calYInt1+radius2-70));
-                radiusInput2.setText(""+(radius2));
-                System.out.println(position1);
-                circle1.setLocation(position1);
 
+                boolean draggingC2 = false;
+                if(e.getSource() == circle1)
+                { draggingC2 = true; }
+                currentScreenLocation = e.getLocationOnScreen();
+                Point position1 = dragLocation(false, draggingC2, radius1, radius2);
+                circle1.setLocation(position1);
                 checkIntersection(radius1, radius2);
             }
         });
     }
 
     //Set location of circle
-    public void setLocation(Circle circlePassed, int x, int y){
+    public void setLocation(Circle circlePassed, int x, int y, int r){
         circlePanelWrapper.setLayout(null);
-        Point positionTemp = new Point(x, y);
-        System.out.println(positionTemp);
-        circlePassed.setLocation(x, y);
-
+        circlePassed.setLocation(x-r, y-r);
     }
 
+    public Point dragLocation(boolean draggingC1, boolean draggingC2, int radius1, int radius2)
+    {
+        //Get the point when mouse is dragging the circle 2
+        Point frameLocation = mainFrame.getLocationOnScreen();
+        double frameLocationX = frameLocation.getX();
+        double frameLocationY = frameLocation.getY();
+        double currentScreenLocationX = currentScreenLocation.getX();
+        double currentScreenLocationY = currentScreenLocation.getY();
+        double currentLocationX = currentLocation.getX();
+        double currentLocationY = currentLocation.getY();
+        double calX = currentScreenLocationX - currentLocationX - frameLocationX;
+        double calY = currentScreenLocationY - currentLocationY - frameLocationY;
+        int calXInt = (int) calX;
+        int calYInt = (int) calY;
+        //Limit the moving area of circle
+        if(calXInt > 500){ calXInt = 500; }
+        if(calYInt > 250){ calYInt = 250; }
+        Point position = new Point(calXInt, calYInt-70);
+
+        if(draggingC1){
+            xInput1.setText(""+(calXInt+radius1));
+            yInput1.setText(""+(calYInt+radius1-70));
+            radiusInput1.setText(""+(radius1));
+        }
+        else if(draggingC2) {
+            xInput2.setText("" + (calXInt + radius2));
+            yInput2.setText("" + (calYInt + radius2 - 70));
+            radiusInput2.setText("" + (radius2));
+        }
+
+        System.out.println("\nDragged location: "+currentScreenLocation);
+        System.out.println("Pressed location: "+currentLocation);
+        System.out.println("Frame location: "+frameLocation);
+        System.out.println("Draw location: "+position);
+
+        return position;
+    }
+
+    //Check intersection
     public void checkIntersection(int radius1, int radius2){
 
         Point centerCircle = circle.getLocation();
